@@ -10,8 +10,9 @@ import (
 )
 
 func main() {
+	var filename string = "sherlock.txt"
 	// open the file
-	file, err := os.Open("test.txt")
+	file, err := os.Open(filename)
 	if err != nil {
 		log.Fatalf("failed to open file: %s", err)
 	}

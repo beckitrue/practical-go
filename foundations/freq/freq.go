@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"sort"
 	"strings"
 )
 
@@ -47,6 +48,21 @@ func main() {
 		}
 	}
 	fmt.Printf("word frequency: %v\n", freq)
+	// sort the word frequency by count
+	sortFreq(freq)
+}
+
+// sort the word frequency by count
+func sortFreq(freq map[string]int) {
+	keys := make([]string, 0, len(freq))
+	for key := range freq {
+		keys = append(keys, key)
+	}
+	sort.Slice(keys, func(i, j int) bool { return freq[keys[i]] > freq[keys[j]] })
+
+	for _, key := range keys {
+		fmt.Printf("%s, %d\n", key, freq[key])
+	}
 }
 
 func isLetter(b byte) bool {

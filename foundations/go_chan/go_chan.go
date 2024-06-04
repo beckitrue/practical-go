@@ -52,6 +52,34 @@ func main() {
 	msg, ok := <-ch // ch is closed
 	fmt.Printf("closed: %#v, (ok: %v)\n", msg, ok)
 
+	values := []int{15, 8, 42, 16, 4, 23}
+	fmt.Println(sleepSort(values))
+
+}
+
+/* For every value "n" in values, spin a goroutine that will
+- sleep for "n" milliseconds
+- Send "n" to the channel
+
+In the function body, collect values from the channel to a slice and return it
+*/
+
+func sleepSort(values []int) []int {
+	ch := make(chan int)
+	var sorted []int
+
+	for _, n := range values {
+		go func(n int) {
+			time.Sleep(time.Duration(n) * time.Millisecond)
+			ch <- n
+		}(n)
+	}
+
+	for i := 0; i < len(values); i++ {
+		sorted = append(sorted, <-ch)
+	}
+
+	return sorted
 }
 
 func shadowExample() {
